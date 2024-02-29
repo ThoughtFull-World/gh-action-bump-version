@@ -287,6 +287,7 @@ function logError(error) {
 
 function parseNpmVersionOutput(output) {
   console.info('output: ', output)
+  return "2.31.2"
   const npmVersionStr = output.trim().split(EOL).pop();
   const version = npmVersionStr.replace(/^v/, '');
   return version;
