@@ -199,9 +199,9 @@ const pkg = getPackageJson();
 
     // do it in the current checked out github branch (DETACHED HEAD)
     // important for further usage of the package.json version
-    await runInWorkspace('yarn', ['version', '--new-version', current, '--no-git-tag-version', '--deferred']);
+    await runInWorkspace('npm', ['version', '--allow-same-version=true', '--legacy-peer-deps=true', '--git-tag-version=false', current]);
     console.log('current 1:', current, '/', 'version:', version);
-    let newVersion = parseNpmVersionOutput(execSync(`yarn version -no-git-tag-version --new-version ${version}`).toString());
+    let newVersion = parseNpmVersionOutput(execSync(`npm version --git-tag-version=false ${version}`).toString());
     console.log('newVersion 1:', newVersion);
     newVersion = `${tagPrefix}${newVersion}${tagSuffix}`;
     if (process.env['INPUT_SKIP-COMMIT'] !== 'true') {
@@ -214,11 +214,11 @@ const pkg = getPackageJson();
       await runInWorkspace('git', ['fetch']);
     }
     await runInWorkspace('git', ['checkout', currentBranch]);
-    await runInWorkspace('yarn', ['version', '--new-version', current, '--no-git-tag-version', '--deferred']);
+    await runInWorkspace('npm', ['version', '--allow-same-version=true', '--legacy-peer-deps=true', '--git-tag-version=false', current]);
     console.log('current 2:', current, '/', 'version:', version);
-    console.log('execute yarn version now with the new version:', version);
-    newVersion = parseNpmVersionOutput(execSync(`yarn version -no-git-tag-version --new-version ${version}`).toString());
-    // fix #166 - yarn workspaces
+    console.log('execute npm version now with the new version:', version);
+    newVersion = parseNpmVersionOutput(execSync(`npm version --git-tag-version=false ${version}`).toString());
+    // fix #166 - npm workspaces
     // https://github.com/phips28/gh-action-bump-version/issues/166#issuecomment-1142640018
     newVersion = newVersion.split(/\n/)[1] || newVersion;
     console.log('newVersion 2:', newVersion);
