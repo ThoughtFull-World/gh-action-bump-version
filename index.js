@@ -286,10 +286,17 @@ function logError(error) {
 }
 
 function parseNpmVersionOutput(output) {
-  console.info('output: ', output)
-  return "2.31.2"
-  const npmVersionStr = output.trim().split(EOL).pop();
-  const version = npmVersionStr.replace(/^v/, '');
+  // #region RENE (override)
+    // yarn version v1.22.19
+    // info Current version: 2.31.2
+    // info New version: 2.31.3
+    // ✨  Done in 0.04s.
+  const str = output.trim().split(EOL)[2]
+  const version = str.split(': ').pop()
+  // #endregion
+
+  // const npmVersionStr = output.trim().split(EOL).pop();
+  // const version = npmVersionStr.replace(/^v/, '');
   return version;
 }
 
